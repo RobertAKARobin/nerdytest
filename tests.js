@@ -3,8 +3,17 @@ if(typeof module !== 'undefined' && module.exports){
 }
 
 const test = new Suite()
-test($=>2 + 2 == $, 4)
-test($=>2 + 2 == $, 4)
-test($=>2 + 2 == $, 5)
-test($=>2 + 2 == foo)
+test($=>$ == 4, 2 + 2)
+test($=>$ == 4, 2 + 2)
+test($=>$ == 5, 2 + 2)
+test($=>$ == foo, 2 + 2)
+test(function(a, b){
+	return (function(){
+		return true
+	})()
+})
+test((a,b)=>{
+	return true
+})
+test(nil=>true)
 test.count()

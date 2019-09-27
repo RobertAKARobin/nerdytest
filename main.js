@@ -30,8 +30,9 @@ function Suite(){
 			status = 'fail'
 		}
 
+		const functionBody = Suite.getFunctionBody(callback)
 		const message = [
-			`${total}:	${callback.toString()}`
+			`${total}:	${functionBody}`
 		]
 		if(comparator){
 			message.push(`	[${comparator}]`)
@@ -93,6 +94,18 @@ Suite.log = (nil=>{
 			const style = `${mapping[type]}`
 			console.log(`${style}${message}${colors.reset}`)
 		}
+	}
+})()
+Suite.getFunctionBody = (nil=>{
+	const matcher = new RegExp([
+		/(?:^\s*function\s*\(.*\)\s*\{\s*)/,
+		/(?:\s*\}\s*$)/,
+		/(?:^.*=>\s*\{?\s*)/
+	].map(rx=>rx.source).join('|'), 'gm')
+
+	return function(fn){
+		const body = fn.toString().replace(matcher, '')
+		return body
 	}
 })()
 
