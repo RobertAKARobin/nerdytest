@@ -7,13 +7,15 @@ function Suite(){
 	let passes = 0
 	let total = 0
 
-	function test(callback, comparator){
+	function test(comparator, comparison){
+		let comparatorValue
 		let error
 		let status
 		let testResult
 		
 		try{
-			testResult = callback(comparator)
+			comparatorValue = comparator()
+			testResult = comparison(comparatorValue)
 		}catch(e){
 			error = e
 		}
@@ -29,12 +31,13 @@ function Suite(){
 		}
 
 		total += 1
-		const functionBody = Suite.getFunctionBody(callback)
+		const functionBody = Suite.getFunctionBody(comparison)
+		const comparatorBody = Suite.getFunctionBody(comparator)
 		const message = [
 			`${total}:	${functionBody}`
 		]
 		if(status === 'fail'){
-			message.push(`	[${comparator}]`)
+			message.push(`	${comparatorBody} == ${comparatorValue}`)
 		}
 		if(error){
 			message.push(`	${error.stack}`)
@@ -45,7 +48,7 @@ function Suite(){
 		}
 		test.log(message.join('\n'), status)
 		return {
-			comparator,
+			comparatorBody,
 			error,
 			functionBody,
 			status,
