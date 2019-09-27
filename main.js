@@ -5,21 +5,18 @@ window.addEventListener('DOMContentLoaded', ()=>{
 function Suite(){
 	'use strict';
 
-	let errors
-	let failures
-	let passes
-	let total
+	let errors = 0
+	let failures = 0
+	let passes = 0
+	let total = 0
 
 	function test(callback, comparator){
 		total += 1
 
 		let error
+		let status
 		let testResult
 		
-		console.log(`${total}:	${callback.toString()}`)
-		if(comparator){
-			console.log(`	(${comparator})`)
-		}
 		try{
 			testResult = callback(comparator)
 		}catch(e){
@@ -27,22 +24,71 @@ function Suite(){
 		}
 		if(error){
 			errors += 1
-			console.log(`	ERROR`)
-			console.log(error)
-		}else if(testResult){
-			failures += 1
-			console.log(`	FAIL`)
-		}else{
+			status = 'error'
+		}else if(testResult === true){
 			passes += 1
-			console.log(`	PASS`)
+			status = 'pass'
+		}else{
+			failures += 1
+			status = 'fail'
 		}
+		const message = [
+			`${total}:	${callback.toString()}`
+		]
+		if(comparator){
+			message.push(`	(${comparator})`)
+		}
+		message.push(`	${status.toUpperCase()}`)
+		if(error){
+			message.push(`	${error.stack}`)
+		}
+		test.log(message.join('\n'), status)
 	}
 	test.count = function(){
-		console.log(`ERROR:	${errors}`)
-		console.log(`FAIL:	${failures}`)
-		console.log(`PASS:	${passes}`)
-		console.log(`TOTAL:	${total}`)
+		test.log(`Error:	${errors}`, 'error')
+		test.log(`Fail:	${failures}`, 'fail')
+		test.log(`Pass:	${passes}`, 'pass')
+		test.log(`TOTAL:	${total}`, (passes === total ? 'pass' : 'fail'))
 	}
+	test.log = (nil=>{
+		if(window){
+			const colors = {
+				black: '#000',
+				green: '#6F6',
+				red: '#F88',
+				unset: 'unset'
+			}
+			const mapping = {
+				error: colors.red,
+				fail: colors.red,
+				normal: colors.unset,
+				pass: colors.green
+			}
+			return function(message, type='normal'){
+				const style = `color: ${mapping[type]}`
+				console.log(`%c ${message}`, style)
+			}
+		}else{
+			// TODO
+			// const colors = {
+			// 	black: '\x1b[30m',
+			// 	green: '\x1b[92m',
+			// 	red: '\x1b[91m',
+			// 	reset: '\x1b[0m',
+			// 	yellow: '\x1b[93m'
+			// }
+			// const mapping = {
+			// 	error: colors.red,
+			// 	fail: colors.red,
+			// 	normal: colors.reset,
+			// 	pass: colors.green
+			// }
+			// return function(message, type='normal'){
+			// 	const style = `${mapping[type]}`
+			// 	console.log(`${style}${message}${colors.reset}`)
+			// }
+		}
+	})()
 	test.reset = function(){
 		errors = 0
 		failures = 0
