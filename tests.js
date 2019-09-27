@@ -3,7 +3,8 @@ if(typeof module !== 'undefined' && module.exports){
 }
 
 const test = new Suite()
-test($=>$ == 4, 2 + 2)
+const test2plus2 = test($=>$ == 4, 2 + 2)
+test(test2plus2Body=>test2plus2Body == '$ == 4', test2plus2.functionBody)
 test($=>$ < 5, 1 + 2)
 test($=>$ == 'foo', 'fo' + 'o')
 
@@ -14,11 +15,15 @@ try{
 	didThrow = true
 }
 test($=>didThrow)
-test(function(a, b){
+
+const testIIFE = test(function(a, b){
 	return (function(){
 		return true
 	})()
 })
+test(iifeBody=>iifeBody == `return (function(){
+		return true
+	})()`, testIIFE.functionBody)
 test((a,b)=>{
 	return true
 })
