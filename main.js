@@ -1,7 +1,3 @@
-window.addEventListener('DOMContentLoaded', ()=>{
-	document.body.innerHTML = 'Hello, JS.'
-})
-
 function Suite(){
 	'use strict';
 
@@ -32,6 +28,7 @@ function Suite(){
 			failures += 1
 			status = 'fail'
 		}
+
 		const message = [
 			`${total}:	${callback.toString()}`
 		]
@@ -51,7 +48,7 @@ function Suite(){
 		test.log(`TOTAL:	${total}`, (passes === total ? 'pass' : 'fail'))
 	}
 	test.log = (nil=>{
-		if(window){
+		if(typeof module === 'undefined'){
 			const colors = {
 				black: '#000',
 				green: '#6F6',
@@ -69,24 +66,23 @@ function Suite(){
 				console.log(`%c ${message}`, style)
 			}
 		}else{
-			// TODO
-			// const colors = {
-			// 	black: '\x1b[30m',
-			// 	green: '\x1b[92m',
-			// 	red: '\x1b[91m',
-			// 	reset: '\x1b[0m',
-			// 	yellow: '\x1b[93m'
-			// }
-			// const mapping = {
-			// 	error: colors.red,
-			// 	fail: colors.red,
-			// 	normal: colors.reset,
-			// 	pass: colors.green
-			// }
-			// return function(message, type='normal'){
-			// 	const style = `${mapping[type]}`
-			// 	console.log(`${style}${message}${colors.reset}`)
-			// }
+			const colors = {
+				black: '\x1b[30m',
+				green: '\x1b[92m',
+				red: '\x1b[91m',
+				reset: '\x1b[0m',
+				yellow: '\x1b[93m'
+			}
+			const mapping = {
+				error: colors.red,
+				fail: colors.red,
+				normal: colors.reset,
+				pass: colors.green
+			}
+			return function(message, type='normal'){
+				const style = `${mapping[type]}`
+				console.log(`${style}${message}${colors.reset}`)
+			}
 		}
 	})()
 	test.reset = function(){
@@ -98,8 +94,7 @@ function Suite(){
 	test.reset()
 	return test
 }
-const test = new Suite()
-test($=>2 + 2 == $, 4)
-test($=>2 + 2 == $, 4)
-test($=>'a' - 3 == foo)
-test.count()
+
+if(typeof module !== 'undefined' && module.exports){
+	module.exports = Suite
+}
