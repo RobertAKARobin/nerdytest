@@ -1,5 +1,6 @@
+'use strict'
+
 function Suite(){
-	'use strict';
 
 	let errors = 0
 	let failures = 0
@@ -33,9 +34,8 @@ function Suite(){
 			`${total}:	${callback.toString()}`
 		]
 		if(comparator){
-			message.push(`	(${comparator})`)
+			message.push(`	[${comparator}]`)
 		}
-		message.push(`	${status.toUpperCase()}`)
 		if(error){
 			message.push(`	${error.stack}`)
 		}

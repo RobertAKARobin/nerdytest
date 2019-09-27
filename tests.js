@@ -5,5 +5,6 @@ if(typeof module !== 'undefined' && module.exports){
 const test = new Suite()
 test($=>2 + 2 == $, 4)
 test($=>2 + 2 == $, 4)
-test($=>'a' - 3 == foo)
+test($=>2 + 2 == $, 5)
+test($=>2 + 2 == foo)
 test.count()
