@@ -47,44 +47,7 @@ function Suite(){
 		test.log(`Pass:	${passes}`, 'pass')
 		test.log(`TOTAL:	${total}`, (passes === total ? 'pass' : 'fail'))
 	}
-	test.log = (nil=>{
-		if(typeof module === 'undefined'){
-			const colors = {
-				black: '#000',
-				green: '#6F6',
-				red: '#F88',
-				unset: 'unset'
-			}
-			const mapping = {
-				error: colors.red,
-				fail: colors.red,
-				normal: colors.unset,
-				pass: colors.green
-			}
-			return function(message, type='normal'){
-				const style = `color: ${mapping[type]}`
-				console.log(`%c ${message}`, style)
-			}
-		}else{
-			const colors = {
-				black: '\x1b[30m',
-				green: '\x1b[92m',
-				red: '\x1b[91m',
-				reset: '\x1b[0m',
-				yellow: '\x1b[93m'
-			}
-			const mapping = {
-				error: colors.red,
-				fail: colors.red,
-				normal: colors.reset,
-				pass: colors.green
-			}
-			return function(message, type='normal'){
-				const style = `${mapping[type]}`
-				console.log(`${style}${message}${colors.reset}`)
-			}
-		}
-	})()
+	test.log = Suite.log
 	test.reset = function(){
 		errors = 0
 		failures = 0
@@ -94,6 +57,44 @@ function Suite(){
 	test.reset()
 	return test
 }
+Suite.log = (nil=>{
+	if(typeof module === 'undefined'){
+		const colors = {
+			black: '#000',
+			green: '#6F6',
+			red: '#F88',
+			unset: 'unset'
+		}
+		const mapping = {
+			error: colors.red,
+			fail: colors.red,
+			normal: colors.unset,
+			pass: colors.green
+		}
+		return function(message, type='normal'){
+			const style = `color: ${mapping[type]}`
+			console.log(`%c ${message}`, style)
+		}
+	}else{
+		const colors = {
+			black: '\x1b[30m',
+			green: '\x1b[92m',
+			red: '\x1b[91m',
+			reset: '\x1b[0m',
+			yellow: '\x1b[93m'
+		}
+		const mapping = {
+			error: colors.red,
+			fail: colors.red,
+			normal: colors.reset,
+			pass: colors.green
+		}
+		return function(message, type='normal'){
+			const style = `${mapping[type]}`
+			console.log(`${style}${message}${colors.reset}`)
+		}
+	}
+})()
 
 if(typeof module !== 'undefined' && module.exports){
 	module.exports = Suite
