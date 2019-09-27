@@ -1,0 +1,15 @@
+{
+  "name": "testsweet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "node tests.js",
+    "serve": "npx hs . -o"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}
