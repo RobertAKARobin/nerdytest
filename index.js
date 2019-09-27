@@ -8,8 +8,6 @@ function Suite(){
 	let total = 0
 
 	function test(callback, comparator){
-		total += 1
-
 		let error
 		let status
 		let testResult
@@ -30,17 +28,29 @@ function Suite(){
 			status = 'fail'
 		}
 
+		total += 1
 		const functionBody = Suite.getFunctionBody(callback)
 		const message = [
 			`${total}:	${functionBody}`
 		]
-		if(comparator){
+		if(status === 'fail'){
 			message.push(`	[${comparator}]`)
 		}
 		if(error){
 			message.push(`	${error.stack}`)
+		}else{
+			if(testResult !== true && testResult !== false){
+				message.push(`	=> ${testResult}`)
+			}
 		}
 		test.log(message.join('\n'), status)
+		return {
+			comparator,
+			error,
+			functionBody,
+			status,
+			testResult
+		}
 	}
 	test.count = function(){
 		test.log(`Error:	${errors}`, 'error')
@@ -100,7 +110,7 @@ Suite.getFunctionBody = (nil=>{
 	const matcher = new RegExp([
 		/(?:^\s*function\s*\(.*\)\s*\{\s*)/,
 		/(?:\s*\}\s*$)/,
-		/(?:^.*=>\s*\{?\s*)/
+		/(?:^.*?=>\s*\{?\s*)/
 	].map(rx=>rx.source).join('|'), 'gm')
 
 	return function(fn){
