@@ -4,13 +4,9 @@
   "description": "A test framework where your code is the test description.",
   "main": "index.js",
   "scripts": {
-    "test": "node tests.js",
-    "serve": "npx hs . -o"
+    "test": "node tests.js"
   },
   "author": "Robin Thomas <contact@robertakarobin.com> (https://robertakarobin.com)",
   "homepage": "https://github.com/robertakarobin/testsweet",
-  "license": "ISC",
-  "devDependencies": {
-    "http-server": "^0.11.1"
-  }
+  "license": "ISC"
 }
