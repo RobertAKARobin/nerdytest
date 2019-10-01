@@ -1,5 +1,5 @@
 {
-  "name": "robintest",
+  "name": "nerdytest",
   "version": "0.0.1",
   "description": "A test framework where your code is the test description.",
   "main": "index.js",
@@ -7,6 +7,6 @@
     "test": "node tests.js"
   },
   "author": "Robin Thomas <contact@robertakarobin.com> (https://robertakarobin.com)",
-  "homepage": "https://github.com/robertakarobin/testsweet",
+  "homepage": "https://github.com/robertakarobin/nerdytest",
   "license": "ISC"
 }

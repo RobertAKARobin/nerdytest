@@ -1,4 +1,4 @@
-# TestSweet
+# Nerdytest
 
 ## Features
 
@@ -36,8 +36,8 @@ test(
 	(a,b)=>a === b
 )
 test(
-		()=>oops('banana') === 'Banana'
-	)
+	()=>oops('banana') === 'Banana'
+)
 test(
 	a=>oops('banana'),
 	(a)=>a === 'Banana'
