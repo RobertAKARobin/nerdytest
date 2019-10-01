@@ -25,6 +25,7 @@ function capitalize(input){
 Test:
 
 ```js
+var test = new Suite()
 test(
 	a=>capitalize('banana'),
 	(a)=>a === 'Banana'
@@ -35,11 +36,14 @@ test(
 	(a,b)=>a === b
 )
 test(
-	a=>capitolise('banana'),
+		()=>oops('banana') === 'Banana'
+	)
+test(
+	a=>oops('banana'),
 	(a)=>a === 'Banana'
 )
 test(
-	a=>capitolise('banana'),
+	a=>oops('banana'),
 	(a)=>a instanceof Error
 )
 ```
@@ -49,25 +53,28 @@ Console output:
 ```txt
 1.	PASS
 	a=>capitalize('banana')
-	$=>$.a === 'Banana'
+	(a)=>a === 'Banana'
 2.	FAIL
 	a=>capitalize('banana')
-		= 'Banana'
+		= Banana
 	b=>capitalize('bAnAnA')
-		= 'BAnAnA'
-	a === b
-3.	FAIL
-	a=>capitolise('banana')
+		= BAnAnA
+	(a,b)=>a === b
+3.	ERROR
+	()=>oops('banana') === 'Banana'
+	ReferenceError...
+4.	FAIL
+	a=>oops('banana')
 		= ReferenceError
 	(a)=>a === 'Banana'
-4.	PASS
-	a=>capitolise('banana')
-		= ReferenceError
+5.	PASS
+	a=>oops('banana')
 	(a)=>a instanceof Error
 	
+ERROR:	1
 FAIL:	2
 PASS:	2
-TOTAL:	2
+TOTAL:	5
 ```
 
 ## Motivation

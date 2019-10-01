@@ -7,59 +7,71 @@ function Suite(){
 	let passes = 0
 	let total = 0
 
-	function test(comparator, comparison){
-		let comparatorValue
+	function getComparatorValue(argument){
+		if(argument instanceof Function){
+			try{
+				return argument()
+			}catch(e){
+				return e
+			}
+		}else{
+			return argument
+		}
+	}
+
+	function test(/*comparators..., comparison*/){
 		let error
 		let status
 		let testResult
-		
+
+		const comparators = Array.from(arguments)
+		const comparison = comparators.pop()
+		const comparatorValues = comparators.map(getComparatorValue)
 		try{
-			comparatorValue = comparator()
-			testResult = comparison(comparatorValue)
+			testResult = comparison(...comparatorValues)
 		}catch(e){
 			error = e
 		}
 		if(error){
 			errors += 1
-			status = 'error'
+			status = 'ERROR'
 		}else if(testResult === true){
 			passes += 1
-			status = 'pass'
+			status = 'PASS'
 		}else{
 			failures += 1
-			status = 'fail'
+			status = 'FAIL'
 		}
 
 		total += 1
-		const functionBody = Suite.getFunctionBody(comparison)
-		const comparatorBody = Suite.getFunctionBody(comparator)
 		const message = [
-			`${total}:	${functionBody}`
+			`${total}:\t${status}`
 		]
-		if(status === 'fail'){
-			message.push(`	${comparatorBody} == ${comparatorValue}`)
-		}
-		if(error){
-			message.push(`	${error.stack}`)
-		}else{
-			if(testResult !== true && testResult !== false){
-				message.push(`	=> ${testResult}`)
+		comparators.forEach((comparator, index)=>{
+			const comparatorValue = comparatorValues[index]
+			message.push(`\t${comparator}`)
+			if(status !== 'PASS'){
+				message.push(`\t\t= ${comparatorValue instanceof Error ? comparatorValue.name : comparatorValue}`)
 			}
+		})
+		message.push(`\t${comparison}`)
+		if(status === 'ERROR'){
+			message.push(error.stack)
 		}
 		test.log(message.join('\n'), status)
-		return {
-			comparatorBody,
-			error,
-			functionBody,
-			status,
-			testResult
-		}
+		// return {
+		// 	comparatorBody,
+		// 	error,
+		// 	functionBody,
+		// 	status,
+		// 	testResult
+		// }
 	}
 	test.count = function(){
-		test.log(`Error:	${errors}`, 'error')
-		test.log(`Fail:	${failures}`, 'fail')
-		test.log(`Pass:	${passes}`, 'pass')
-		test.log(`TOTAL:	${total}`, (passes === total ? 'pass' : 'fail'))
+		test.log(`ERROR:\t${errors}`, 'ERROR')
+		test.log(`FAIL:\t${failures}`, 'FAIL')
+		test.log(`PASS:\t${passes}`, 'PASS')
+		test.log(`TOTAL:\t${total}`, (passes === total ? 'PASS' : 'FAIL'))
 	}
 	test.log = Suite.log
 	test.reset = function(){
@@ -80,10 +92,10 @@ Suite.log = (nil=>{
 			unset: 'unset'
 		}
 		const mapping = {
-			error: colors.red,
-			fail: colors.red,
+			ERROR: colors.red,
+			FAIL: colors.red,
 			normal: colors.unset,
-			pass: colors.green
+			PASS: colors.green
 		}
 		return function(message, type='normal'){
 			const style = `color: ${mapping[type]}`
@@ -98,27 +110,15 @@ Suite.log = (nil=>{
 			yellow: '\x1b[93m'
 		}
 		const mapping = {
-			error: colors.red,
-			fail: colors.red,
+			ERROR: colors.red,
+			FAIL: colors.red,
 			normal: colors.reset,
-			pass: colors.green
+			PASS: colors.green
 		}
 		return function(message, type='normal'){
 			const style = `${mapping[type]}`
 			console.log(`${style}${message}${colors.reset}`)
 		}
-	}
-})()
-Suite.getFunctionBody = (nil=>{
-	const matcher = new RegExp([
-		/(?:^\s*function\s*\(.*\)\s*\{\s*)/,
-		/(?:\s*\}\s*$)/,
-		/(?:^.*?=>\s*\{?\s*)/
-	].map(rx=>rx.source).join('|'), 'gm')
-
-	return function(fn){
-		const body = fn.toString().replace(matcher, '')
-		return body
 	}
 })()
 
