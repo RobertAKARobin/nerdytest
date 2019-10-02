@@ -8,7 +8,7 @@
 
 3. Prints expected vs actual values.
 
-4. Every thing runs in normal JavaScript order. No `.before`/`.after` hooks or needing to worry about asynchronicity.
+4. Everything runs in normal JavaScript order. No `.before`/`.after` hooks or needing to worry about asynchronicity.
 
 5. Small with zero dependencies.
 
@@ -92,3 +92,31 @@ test('.capitalize() uppercases the first letter', ()=>{
 	assert('Banana').equals('Banana')
 })
 ```
+
+## API
+
+### `new Suite()`
+
+Returns an instance of a Suite.
+
+### `suite.test(comparators..., comparison)`
+
+Declare any number of comparators (including zero), then compare them in a comparison function.
+
+* `comparators: anything`: If a function, the function's return value.
+* `comparison: function`: A callback, the arguments of which are the comparators. If the function returns `true`, the test passes.
+
+### `suite.count()`
+
+Logs the number of errors, failures, and passes for the test suite.
+
+### `suite.log(style, message)`
+
+Logs a message.
+
+* `style: string ('ERROR' || 'FAIL' || 'PASS')`: Determines the color of the message in the console.
+* `message: string`
+
+### `suite.reset()`
+
+Sets the number of errors, failures, and passes for the test suite back to zero.
