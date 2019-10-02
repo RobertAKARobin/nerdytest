@@ -14,7 +14,13 @@
 
 ## Structure
 
-Code: 
+Install:
+
+```sh
+npm install nerdytest
+```
+
+Sample code: 
 
 ```js
 function capitalize(input){
@@ -25,8 +31,9 @@ function capitalize(input){
 Test:
 
 ```js
+const Suite = require('nerdytest')
 const suite = new Suite()
-const test = suite.test.bind(suite)
+const test = suite.test.bind(suite) // Not necessary, but saves some typing versus suite.test
 test(
 	a=>capitalize('banana'),
 	(a)=>a === 'Banana'
