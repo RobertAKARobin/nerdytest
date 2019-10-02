@@ -6,8 +6,8 @@ function capitalize(input){
 	return input.substring(0,1).toUpperCase() + input.substring(1)
 }
 
-var test = new Suite()
-var test = new Suite()
+const suite = new Suite()
+const test = suite.test.bind(suite)
 test(
 	a=>capitalize('banana'),
 	(a)=>a === 'Banana'
@@ -28,4 +28,34 @@ test(
 	a=>oops('banana'),
 	(a)=>a instanceof Error
 )
-test.count()
+suite.count()
+
+const expectedMessages = `1:	PASS
+	a=>capitalize('banana')
+	(a)=>a === 'Banana'
+2:	FAIL
+	a=>capitalize('banana')
+		= Banana
+	b=>capitalize('bAnAnA')
+		= BAnAnA
+	(a,b)=>a === b
+3:	ERROR
+	()=>oops('banana') === 'Banana'
+ReferenceError: oops is not defined
+4:	FAIL
+	a=>oops('banana')
+		= ReferenceError
+	(a)=>a === 'Banana'
+5:	PASS
+	a=>oops('banana')
+	(a)=>a instanceof Error`.split(/\n(?=\d\:)/)
+suite.tests.forEach((completedTest, index)=>{
+	const expectedMessage = expectedMessages[index].trim()
+	const actualMessage = (index === 2 ? completedTest.message.split('\n').slice(0,3).join('\n') : completedTest.message)
+	test(
+		a=>actualMessage,
+		b=>expectedMessage,
+		(a,b)=>a == b
+	)
+})
+suite.count()
