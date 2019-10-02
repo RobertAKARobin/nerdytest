@@ -12,6 +12,8 @@
 
 5. Small with zero dependencies.
 
+6. Runs in the browser, Node, or in any other runtime environment out-of-the-box.
+
 ## Structure
 
 Install:
