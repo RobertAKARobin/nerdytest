@@ -1,6 +1,6 @@
 {
   "name": "nerdytest",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A test framework where your code is the test description.",
   "main": "index.js",
   "scripts": {

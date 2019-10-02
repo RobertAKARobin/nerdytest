@@ -60,7 +60,7 @@ Suite.prototype = {
 		this.tests = []
 		this.total = 0
 	},
-	test: function test(/*instance.inputs.., instance.comparision*/){
+	test: function test(/*comparators.., comparision*/){
 		const suite = this
 		const test = {}
 		suite.tests.push(test)
