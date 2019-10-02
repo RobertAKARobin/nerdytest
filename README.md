@@ -25,7 +25,8 @@ function capitalize(input){
 Test:
 
 ```js
-var test = new Suite()
+const suite = new Suite()
+const test = suite.test.bind(suite)
 test(
 	a=>capitalize('banana'),
 	(a)=>a === 'Banana'
@@ -46,28 +47,29 @@ test(
 	a=>oops('banana'),
 	(a)=>a instanceof Error
 )
+suite.count()
 ```
 
 Console output:
 
 ```txt
-1.	PASS
+1:	PASS
 	a=>capitalize('banana')
 	(a)=>a === 'Banana'
-2.	FAIL
+2:	FAIL
 	a=>capitalize('banana')
 		= Banana
 	b=>capitalize('bAnAnA')
 		= BAnAnA
 	(a,b)=>a === b
-3.	ERROR
+3:	ERROR
 	()=>oops('banana') === 'Banana'
-	ReferenceError...
-4.	FAIL
+ReferenceError: oops is not defined...
+4:	FAIL
 	a=>oops('banana')
 		= ReferenceError
 	(a)=>a === 'Banana'
-5.	PASS
+5:	PASS
 	a=>oops('banana')
 	(a)=>a instanceof Error
 	
